@@ -1,12 +1,12 @@
-from sqlmodel import SQLModel, Field
+from pydantic import BaseModel
 
-class Question(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
+class Question(BaseModel):
+    id: int
     answersCorrect: str
     answersIncorrect: str
     question: str
     
-class QuestionDTO(SQLModel):
+class QuestionDTO(BaseModel):
     answersCorrect: str
     answersIncorrect: str
     question: str

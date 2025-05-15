@@ -1,11 +1,10 @@
-from sqlmodel import SQLModel, Field
-from typing import Optional
+from pydantic import BaseModel
 
-class User(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+class User(BaseModel):
+    id: int
     name: str
     cpf: str
 
-class UserDTO(SQLModel):
+class UserDTO(BaseModel):
     name: str
     cpf: str

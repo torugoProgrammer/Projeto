@@ -1,16 +1,16 @@
-from sqlmodel import SQLModel, Field
-from typing import Optional
 from datetime import datetime
+from pydantic import BaseModel
+from typing import Optional
 
-class Quiz(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
-    start_time: datetime = Field(default_factory=datetime.now())
+class Quiz(BaseModel):
+    id: int 
+    start_time: datetime
     end_time: Optional[datetime]
     
-    question_one_id: int | None = Field(None, foreign_key='question.id')
-    question_two_id: int | None = Field(None, foreign_key='question.id')
+    question_one_id: int 
+    question_two_id: int 
 
-class QuizDTO(SQLModel):
+class QuizDTO(BaseModel):
     end_time: Optional[datetime]
     question_one_id: int
     question_two_id: int
