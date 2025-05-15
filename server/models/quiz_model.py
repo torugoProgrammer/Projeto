@@ -10,8 +10,8 @@ class Quiz(SQLModel, table=True):
     question_one_id: int | None = Field(None, foreign_key='question.id')
     question_two_id: int | None = Field(None, foreign_key='question.id')
 
-# class QuizDTO(SQLModel):
-#     end_time: Optional[datetime]
-#     question_one_id: int
-#     question_two_id: int
+class QuizDTO(SQLModel):
+    end_time: Optional[datetime]
+    question_one_id: int
+    question_two_id: int
     

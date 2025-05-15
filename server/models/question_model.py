@@ -6,7 +6,7 @@ class Question(SQLModel, table=True):
     answersIncorrect: str
     question: str
     
-# class QuestionDTO(SQLModel):
-#     answersCorrect: str
-#     answersIncorrect: str
-#     question: str
+class QuestionDTO(SQLModel):
+    answersCorrect: str
+    answersIncorrect: str
+    question: str

@@ -6,6 +6,6 @@ class User(SQLModel, table=True):
     name: str
     cpf: str
 
-# class UserDTO(SQLModel):
-#     name: str
-#     cpf: str
+class UserDTO(SQLModel):
+    name: str
+    cpf: str

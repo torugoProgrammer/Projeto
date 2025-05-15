@@ -1,14 +1,18 @@
 from fastapi import APIRouter
-from model.user import User
-from sqlmodel import Session, select, col, delete, update
-from controller.user_controller import UserController 
+from controllers.user_controller import UserController 
+from models.user_model import User
 
 router = APIRouter()
 user_controller = UserController()
 
 @router.get('/user/{id}')
-async def get_user(id: int):
-     return await user_controller.get_user(id)
+def get_user(id: int):
+    return user_controller.get_by_id(id)
+
+@router.post('/user')
+def create_user(user: User):
+    return user_controller.create(user)
+    
 # @user_router.post('/user')
 # def post_user(user: User):
 #     with Session() as session:
