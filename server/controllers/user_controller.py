@@ -1,28 +1,30 @@
 from models.user_model import User, UserDTO
-from sqlmodel import Session, select
 from fastapi import HTTPException, Response
+from prisma import Prisma
 
 
 class UserController:
-    def get_by_id(self, id: int):
-        with Session() as session:
-            cmd = select(User).where(User.id == id)
+    def __init__(self):
+        self.db = Prisma()
+    
+    async def get_by_id(self, id: int) -> User:
+        await self.db.connect()
 
-            try:
-                result = session.exec(cmd)
-                return Response(result.first(), status_code=200)
-            except Exception:
-                raise HTTPException(status_code=404, detail="User not found") 
+        try:
+            result = self.db.user.find_first(where={"id": id})
+            return result
+        except Exception as e:
+            await self.db.disconnect()
+            raise e
 
-    def create(self, user: User):
-        with Session() as session:
-            try:
-                session.add(user)
-                session.commit()
-                session.refresh(user)
-                return Response(user, status_code=201)
-            except Exception as e:
-                print(e)
-                raise HTTPException(status_code=404, detail='Not possible to create')
+    async def create(self, user: UserDTO) -> User:
+        await self.db.connect()
+        user = user.model_dump()
+        try:
+            result = await self.db.user.create(data=user)
+            return result
+        except Exception as e:
+            self.db.disconnect()
+            raise e
                     
     
