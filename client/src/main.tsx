@@ -1,12 +1,25 @@
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 
+import * as TanStackQueryProvider from '../src/integrations/tanstack-query/root-provider.tsx'
+
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
-import { ContextProvider } from './contexts'
+
+import './styles.css'
+import { ContextProvider } from './context/contextProvider.tsx'
 
 // Create a new router instance
-const router = createRouter({ routeTree })
+const router = createRouter({
+  routeTree,
+  context: {
+    ...TanStackQueryProvider.getContext(),
+  },
+  defaultPreload: 'intent',
+  scrollRestoration: true,
+  defaultStructuralSharing: true,
+  defaultPreloadStaleTime: 0,
+})
 
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {
@@ -16,12 +29,14 @@ declare module '@tanstack/react-router' {
 }
 
 // Render the app
-const rootElement = document.getElementById('root')!
-if (!rootElement.innerHTML) {
+const rootElement = document.getElementById('app')
+if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <ContextProvider>
-      <RouterProvider router={router} />
+      <TanStackQueryProvider.Provider>
+        <RouterProvider router={router} />
+      </TanStackQueryProvider.Provider>
     </ContextProvider>
   )
 }

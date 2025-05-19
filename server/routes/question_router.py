@@ -17,3 +17,7 @@ async def get_all_questions():
 @router.post('/question')
 async def create_question(question: QuestionDTO):
     return await question_controller.create(question)
+
+@router.get('/question/random/{count}')
+async def get_random(count: int):
+    return await question_controller.take_random(count)

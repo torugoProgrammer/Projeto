@@ -1,3 +1,4 @@
+import { useAppContext } from '@/context/contextProvider'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/quiz')({
@@ -5,5 +6,12 @@ export const Route = createFileRoute('/quiz')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/quiz"!</div>
+  const {questions} = useAppContext()
+  console.log(questions);
+  
+  return (
+  <div className='card bg-indigo-400 rounded-none '>
+    <p>quiz</p>
+  </div>
+  )
 }

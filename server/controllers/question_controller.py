@@ -1,6 +1,7 @@
 from models.question_model import Question, QuestionDTO
 from prisma import Prisma
 from fastapi import HTTPException, Response
+import random
 
 class QuestionController:
     def __init__(self):
@@ -38,3 +39,15 @@ class QuestionController:
         except Exception as e:
             await self.db.disconnect()
             raise e
+    
+    async def take_random(self, count: int) -> list[Question]:
+            await self.db.connect()
+            result = None
+            try:
+                questions = await self.db.question.find_many()
+                result = random.sample(questions, count)
+                await self.db.disconnect()
+                return result
+            except Exception as e:
+                await self.db.disconnect()
+                raise e

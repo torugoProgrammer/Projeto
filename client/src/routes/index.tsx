@@ -1,23 +1,46 @@
-import { Button } from '@/components/ui/button'
-import { useTheme } from '@/theme'
-import { createFileRoute } from '@tanstack/react-router'
+import { Header, InputCard } from '@/components/ui'
+import { useAppContext } from '@/context/contextProvider'
+import { questionService } from '@/services/questionService'
+import { useMutation } from '@tanstack/react-query'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
-  component: Index,
+  component: App,
 })
 
-function Index() {
-  const { setTheme, theme } = useTheme()
-
-  function toggleTheme(){
-    if (theme === 'light') setTheme('dark')
-    if (theme === 'dark') setTheme('light')
+function App() {
+  const navigate = useNavigate()
+  const {setUser, user, setQuestions} = useAppContext()
+  const {mutateAsync, isPending} = useMutation({
+    mutationFn: () => questionService.takeRandom(2)
+  })
+  
+  const startQuiz = async () => {
+    if (!user?.name || !user?.cpf) return
+    await mutateAsync(undefined, {
+      onSuccess({data}){
+        setQuestions(data.data)
+        navigate({ to: "/quiz" })
+      },
+      onError(){}
+    })
   }
 
   return (
-    <div className="p-2">
-      <h3>Welcome Home!</h3>
-      <Button variant='outline' onClick={toggleTheme}>Change Theme</Button>
+    <div className='h-screen w-full '>
+      <Header />
+      <InputCard />
+      <div className="flex flex-col items-center justify-center">
+        <div className="btn btn-outline btn-secondary bg border-neutral rounded-2xl border-1 btn-wide w-2/4 m-3 h-12 flex items-center justify-center ">
+          <p>Exportar Dados</p>
+        </div>
+        <button onClick={startQuiz} className="btn btn-primary border-1 rounded-2xl w-2/4 flex justify-center center items-center h-12">
+          {isPending && (  
+            <span className='loading loading-spinner'></span>
+          )}
+          <p>Começar</p>
+        </button>
+      </div>
     </div>
   )
 }
