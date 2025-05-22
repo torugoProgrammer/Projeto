@@ -1,7 +1,7 @@
 export default function Header() {
     return (
         <>
-            <div className="card rounded-none bg-indigo-400 w-full h-1/5">
+            <div className="card rounded-none bg-indigo-400 w-full h-1/5 md:h-1/4">
                 <div className="card-body flex flex-row justify-between">
                     <div>
                         <h2 className="card-title text-3xl">Quiz</h2>

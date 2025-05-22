@@ -8,7 +8,7 @@ export function ContextProvider({children}: {children: ReactElement}) {
     const [user, setUser] = useState<User>()
     const [questions, setQuestions] = useState<Question[]>()
     return(   
-        <appContext.Provider value={{user, setUser, questions, setQuestions}}>
+        <appContext.Provider value={{ user, setUser, questions, setQuestions }}>
             {children}
         </appContext.Provider>
     )

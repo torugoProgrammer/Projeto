@@ -19,7 +19,7 @@ function App() {
     if (!user?.name || !user?.cpf) return
     await mutateAsync(undefined, {
       onSuccess({data}){
-        setQuestions(data.data)
+        setQuestions(data)
         navigate({ to: "/quiz" })
       },
       onError(){}
